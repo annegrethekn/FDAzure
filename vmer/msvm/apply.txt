@@ -1,0 +1,68 @@
+random_id.FDV: Refreshing state... [id=iJPDxV0]
+random_password.password: Refreshing state... [id=none]
+data.azurerm_client_config.current: Reading...
+azurerm_resource_group.rg: Refreshing state... [id=/subscriptions/9331a504-ee29-4876-9c59-a57c785ff33c/resourceGroups/FDVM-rg]
+data.azurerm_client_config.current: Read complete after 0s [id=Y2xpZW50Q29uZmlncy9jbGllbnRJZD0wYzU5YjM0YS1mZGMyLTQyNTktYWI5YS02NmE2NTAyOTQ5YTM7b2JqZWN0SWQ9Mjc2MWQxMDMtYzQ2Mi00Zjc1LWFjMzktMjExYzMzM2MzODczO3N1YnNjcmlwdGlvbklkPTkzMzFhNTA0LWVlMjktNDg3Ni05YzU5LWE1N2M3ODVmZjMzYzt0ZW5hbnRJZD03NDEzMjkyMS0wMjBkLTRkZTYtODVjMS1jZTU1N2YwNjU0ZjU=]
+azurerm_virtual_network.FD_terraform_vnet: Refreshing state... [id=/subscriptions/9331a504-ee29-4876-9c59-a57c785ff33c/resourceGroups/FDVM-rg/providers/Microsoft.Network/virtualNetworks/FD_terraform_vnet]
+random_id.random_id: Refreshing state... [id=tBkOjpwXUv4]
+azurerm_key_vault.FDkv005: Refreshing state... [id=/subscriptions/9331a504-ee29-4876-9c59-a57c785ff33c/resourceGroups/FDVM-rg/providers/Microsoft.KeyVault/vaults/FDvault005]
+azurerm_public_ip.fd001_terraform_public_ip: Refreshing state... [id=/subscriptions/9331a504-ee29-4876-9c59-a57c785ff33c/resourceGroups/FDVM-rg/providers/Microsoft.Network/publicIPAddresses/fd001_terraform_public_ip]
+azurerm_network_security_group.FD_terraform_nsg: Refreshing state... [id=/subscriptions/9331a504-ee29-4876-9c59-a57c785ff33c/resourceGroups/FDVM-rg/providers/Microsoft.Network/networkSecurityGroups/FD_terraform_nsg]
+azurerm_storage_account.FD01storageaccount2: Refreshing state... [id=/subscriptions/9331a504-ee29-4876-9c59-a57c785ff33c/resourceGroups/FDVM-rg/providers/Microsoft.Storage/storageAccounts/fd01storageaccount2]
+azurerm_subnet.fd_terraform_subnet: Refreshing state... [id=/subscriptions/9331a504-ee29-4876-9c59-a57c785ff33c/resourceGroups/FDVM-rg/providers/Microsoft.Network/virtualNetworks/FD_terraform_vnet/subnets/fd_terraform_subnet]
+azurerm_network_interface.FD01_terraform_nic: Refreshing state... [id=/subscriptions/9331a504-ee29-4876-9c59-a57c785ff33c/resourceGroups/FDVM-rg/providers/Microsoft.Network/networkInterfaces/FD01_terraform_nic]
+azurerm_key_vault_secret.vmpassword: Refreshing state... [id=https://fdvault005.vault.azure.net/secrets/vmpassword/cc5e1209f3024671ae9bb6214fd796c3]
+azurerm_network_interface_security_group_association.FD01: Refreshing state... [id=/subscriptions/9331a504-ee29-4876-9c59-a57c785ff33c/resourceGroups/FDVM-rg/providers/Microsoft.Network/networkInterfaces/FD01_terraform_nic|/subscriptions/9331a504-ee29-4876-9c59-a57c785ff33c/resourceGroups/FDVM-rg/providers/Microsoft.Network/networkSecurityGroups/FD_terraform_nsg]
+azurerm_windows_virtual_machine.main: Refreshing state... [id=/subscriptions/9331a504-ee29-4876-9c59-a57c785ff33c/resourceGroups/FDVM-rg/providers/Microsoft.Compute/virtualMachines/fdvm01-vm]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # azurerm_virtual_machine_extension.join-domain will be created
+  + resource "azurerm_virtual_machine_extension" "join-domain" {
+      + failure_suppression_enabled = false
+      + id                          = (known after apply)
+      + name                        = "fdvm01-vm"
+      + protected_settings          = (sensitive value)
+      + publisher                   = "Microsoft.Compute"
+      + settings                    = jsonencode(
+            {
+              + Name    = "fdtest365.onmicrosoft.com"
+              + OUPath  = ""
+              + Options = "3"
+              + Restart = "true"
+              + User    = "DevOps@fdtest365.onmicrosoft.com"
+            }
+        )
+      + type                        = "JsonADDomainExtension"
+      + type_handler_version        = "1.3"
+      + virtual_machine_id          = "/subscriptions/9331a504-ee29-4876-9c59-a57c785ff33c/resourceGroups/FDVM-rg/providers/Microsoft.Compute/virtualMachines/fdvm01-vm"
+    }
+
+  # azurerm_virtual_machine_extension.wait-for-domain-to-provision will be created
+  + resource "azurerm_virtual_machine_extension" "wait-for-domain-to-provision" {
+      + failure_suppression_enabled = false
+      + id                          = (known after apply)
+      + name                        = "TestConnectionDomain"
+      + publisher                   = "Microsoft.Compute"
+      + settings                    = jsonencode(
+            {
+              + commandToExecute = "powershell.exe -Command \"while (!(Test-Connection -ComputerName fdtest365.onmicrosoft.com -Count 1 -Quiet) -and ($retryCount++ -le 360)) { Start-Sleep 10 } \""
+            }
+        )
+      + type                        = "CustomScriptExtension"
+      + type_handler_version        = "1.9"
+      + virtual_machine_id          = "/subscriptions/9331a504-ee29-4876-9c59-a57c785ff33c/resourceGroups/FDVM-rg/providers/Microsoft.Compute/virtualMachines/fdvm01-vm"
+    }
+
+Plan: 2 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: 
+Apply cancelled.
